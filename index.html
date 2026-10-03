@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ULTIMATE KAHOTTVARIANT O'YINI - SINF TANLASH</title>
+    <style>
+        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #0a0f1d 0%, #03050a 100%);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        header {
+            height: 70px;
+            background: #0b101d;
+            border-bottom: 2px solid #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            flex-shrink: 0;
+        }
+        header h1 {
+            color: #38bdf8;
+            font-size: 20px;
+            margin: 0;
+            text-shadow: 0 0 15px rgba(56,189,248,0.5);
+            letter-spacing: 1px;
+        }
+        .header-info {
+            color: #facc15;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .teams-sidebar {
+            width: 280px;
+            background: #070a14;
+            border-right: 2px solid #1e293b;
+            border-left: 2px solid #1e293b;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .team-box {
+            background: #111827;
+            border: 2px solid #374151;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.6);
+        }
+        
+        .team-name-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 6px;
+        }
+        .team-name-input {
+            background: #1f2937;
+            border: 1px solid #4b5563;
+            color: #38bdf8;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            outline: none;
+        }
+        .team-name-input:invalid {
+            border-color: #ef4444;
+            box-shadow: 0 0 8px rgba(239,68,68,0.6);
+        }
+        .dice-btn {
+            background: #3b82f6;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(59,130,246,0.5);
+            min-height: 44px;
+            min-width: 44px;
+        }
+        .dice-btn:active { transform: scale(0.92); }
+
+        .avatar-customizer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #1f2937;
+            border-radius: 10px;
+            padding: 6px;
+            margin-bottom: 6px;
+            border: 1px solid #374151;
+        }
+        .av-part {
+            background: #111827;
+            border: 1px solid #4b5563;
+            color: #38bdf8;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            min-height: 40px;
+            min-width: 40px;
+        }
+        .av-preview {
+            font-size: 26px;
+            background: #0f172a;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 2px solid #facc15;
+            box-shadow: 0 0 10px rgba(250,204,21,0.3);
+        }
+
+        .team-score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1f2937;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+        .team-score {
+            font-size: 22px;
+            font-weight: bold;
+            color: #34d399;
+            text-shadow: 0 0 10px rgba(52,211,153,0.3);
+        }
+        .team-controls {
+            display: flex;
+            gap: 6px;
+        }
+        .t-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .t-plus { background: #059669; }
+        .t-minus { background: #dc2626; }
+        .t-btn:active { transform: scale(0.9); }
+
+        .center-stage {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Modallar */
+        .fullscreen-modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 5, 10, 0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 15px;
+        }
+
+        .grades-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 700px;
+        }
+        .grade-btn {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 20px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(245,158,11,0.25);
+            text-align: center;
+        }
+        .grade-btn:hover {
+            border-color: #facc15;
+            background: linear-gradient(145deg, #d97706 0%, #1e293b 100%);
+            box-shadow: 0 0 25px rgba(250,204,21,0.5);
+            transform: translateY(-3px);
+        }
+
+        .subjects-card {
+            background: linear-gradient(135deg, #111827 0%, #0b132b 100%);
+            border: 3px solid #38bdf8;
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(56,189,248,0.35);
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .subjects-card h2 { 
+            color: #facc15; 
+            font-size: 26px; 
+            margin-top: 0; 
+            margin-bottom: 8px; 
+            text-shadow: 0 0 10px rgba(250,204,21,0.4);
+        }
+        .subjects-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .subjects-grid-menu {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            overflow-y: auto;
+            padding: 5px;
+            flex: 1;
+        }
+        .subject-menu-btn {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            padding: 18px 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(59,130,246,0.25);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 95px;
+        }
+        .subject-menu-btn span.icon {
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));
+        }
+        .subject-menu-btn:hover {
+            border-color: #38bdf8;
+            background: linear-gradient(145deg, #2563eb 0%, #1e293b 100%);
+            box-shadow: 0 0 25px rgba(56,189,248,0.5);
+            transform: translateY(-3px);
+        }
+        .subject-menu-btn:active { transform: scale(0.95); }
+
+        #teamSetupModal {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 5, 10, 0.96);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 120;
+            padding: 15px;
+        }
+        .setup-card {
+            background: #111827;
+            border: 2px solid #38bdf8;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(56,189,248,0.3);
+        }
+        .setup-card h2 { color: #38bdf8; margin-top: 0; font-size: 24px; }
+        .setup-card label { display: block; margin: 15px 0 10px; font-size: 16px; color: #94a3b8; }
+        .setup-card input {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            background: #1f2937;
+            border: 2px solid #4b5563;
+            color: #fff;
+            border-radius: 10px;
+            text-align: center;
+            outline: none;
+        }
+        .setup-card button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            background: #059669;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(5,150,105,0.5);
+            min-height: 52px;
+        }
+
+        .board-view {
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            flex-direction: column;
+            align-items: center;
+        }
+        .board-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-height: calc(100vh - 130px);
+            overflow-y: auto;
+            padding: 5px;
+        }
+        .tile {
+            background: #1e293b;
+            border: 2px solid #6366f1;
+            border-radius: 10px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(99,102,241,0.3);
+            transition: 0.15s;
+        }
+        .tile:active:not(.disabled) { transform: scale(0.92); background: #4f46e5; }
+        .tile.disabled {
+            background: #0f172a;
+            border-color: #334155;
+            color: #475569;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .question-modal {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 5, 10, 0.97);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 150;
+        }
+        .q-card {
+            background: #0f172a;
+            border: 3px solid #6366f1;
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 850px;
+            box-shadow: 0 0 50px rgba(99,102,241,0.3);
+            text-align: center;
+            position: relative;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .q-badge { color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .q-text { font-size: 19px; line-height: 1.4; margin-bottom: 15px; color: #f8fafc; overflow-y: auto; max-height: 180px; }
+        
+        .answer-box {
+            font-size: 17px;
+            color: #34d399;
+            background: #064e3b;
+            border: 2px solid #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: left;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            line-height: 1.4;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .q-buttons { display: flex; justify-content: center; gap: 12px; flex-shrink: 0; }
+        .btn-custom {
+            padding: 12px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+            color: #fff;
+            min-height: 48px;
+        }
+        .btn-reveal { background: #f59e0b; }
+        .btn-back-board { background: #475569; }
+        .btn-custom:active { transform: scale(0.95); }
+
+        .back-nav-btn {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        #resultsModal {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 5, 10, 0.98);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 20px;
+        }
+        .results-card {
+            background: #111827;
+            border: 3px solid #38bdf8;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(56,189,248,0.4);
+        }
+        .results-card h2 { color: #facc15; font-size: 26px; margin-top: 0; margin-bottom: 15px; }
+        .podium-list {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .podium-item {
+            background: #1f2937;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #38bdf8;
+        }
+        .result-btns {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .result-btns button {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            min-height: 48px;
+        }
+        .btn-restart { background: #059669; }
+        .btn-to-subjects { background: #0284c7; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ULTIMATE ARENA</h1>
+        <div class="header-info" id="headerInfoTitle">SINF VA FAN TANLANMAGAN</div>
+        <button class="back-nav-btn" style="background: #dc2626; padding: 6px 14px; font-size: 14px;" onclick="resetToGradeSelection()">Boshidan Tanlash</button>
+    </header>
+
+    <div class="workspace">
+        <div class="teams-sidebar" id="leftSidebar"></div>
+
+        <div class="center-stage">
+            
+            <!-- 1. SINF TANLASH MODALI (5-dan 11-sinfgacha) -->
+            <div id="gradeMenuModal" class="fullscreen-modal">
+                <div class="subjects-card" style="max-width: 800px;">
+                    <h2>O'QUVCHILAR UCHUN SINFNI TANLANG</h2>
+                    <p>5-sinfdan 11-sinfgacha bo'lgan maktab dasturi bo'yicha savollarni yuklash uchun sinfni tanlang</p>
+                    <div class="grades-grid" id="gradesGrid"></div>
+                </div>
+            </div>
+
+            <!-- 2. FAN TANLASH MODALI (15 ta fan) -->
+            <div id="subjectMenuModal" class="fullscreen-modal" style="display: none;">
+                <div class="subjects-card">
+                    <h2 id="selectedGradeTitle">15 TA FANNI TANLANG</h2>
+                    <p>Tanlangan sinf maktab darsliklariga mos 40 tadan mukammal savol va ilmiy yechimlar</p>
+                    <div class="subjects-grid-menu" id="subjectsGridMenu"></div>
+                </div>
+            </div>
+
+            <!-- 3. JAMOALARNI SOZLASH MODALI -->
+            <div id="teamSetupModal">
+                <div class="setup-card">
+                    <h2>JAMOALARNI SOZLASH</h2>
+                    <label>Nechta jamoa qatnashadi? (2 tadan 6 tagacha):</label>
+                    <input type="number" id="teamCountInput" value="2" min="2" max="6">
+                    <button onclick="buildTeamsAndStartGame()">O'YINNI BOSHLASH</button>
+                </div>
+            </div>
+
+            <!-- 4. DOSKA KO'RINISHI -->
+            <div class="board-view" id="boardView">
+                <div class="board-header">
+                    <h2 id="boardTitle" style="color: #38bdf8; margin: 0; font-size: 20px;">Fan Doskasi</h2>
+                    <button class="back-nav-btn" style="background: #059669;" onclick="finishGameCheck()">O'yinni Tugatish 🏆</button>
+                </div>
+                <div class="tiles-grid" id="tilesGrid"></div>
+            </div>
+
+        </div>
+
+        <div class="teams-sidebar" id="rightSidebar"></div>
+    </div>
+
+    <!-- SAVOL MODALI -->
+    <div class="question-modal" id="questionModal">
+        <div class="q-card">
+            <div class="q-badge" id="modalBadge">Savol #1</div>
+            <div class="q-text" id="modalText">Savol matni shu yerda chiqadi...</div>
+            <div class="answer-box" id="modalAnswerBox">Ilmiy mukammal javob va yechim...</div>
+            <div class="q-buttons">
+                <button class="btn-custom btn-reveal" id="revealBtn" onclick="revealModalAnswer()">Javobni Ko'rsatish</button>
+                <button class="btn-custom btn-back-board" onclick="closeModalAndDisable()">Doskaga Qaytish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NATIJALAR MODALI -->
+    <div id="resultsModal">
+        <div class="results-card">
+            <h2>🏆 TABRIKLAYMIZ! O'YIN YAKUNLANDI</h2>
+            <p style="color: #94a3b8; font-size: 15px; margin: 0;">Jamoalarning 1-dan o'rinlargacha bo'lgan yakuniy natijalari:</p>
+            <div class="podium-list" id="podiumList"></div>
+            <div class="result-btns">
+                <button class="btn-restart" onclick="restartSameGame()">Qaytadan O'ynash</button>
+                <button class="btn-to-subjects" onclick="resetToGradeSelection()">Boshidan Tanlash</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let selectedGrade = 5;
+    let selectedSubjectKey = '';
+    let teamCount = 2;
+    let teams = [];
+    let currentTileIndex = null;
+    let activeBoardQuestions = [];
+
+    const animals = ["🦊", "🦁", "🐼", "🐯", "🐨", "🐰", "🐵", "🐺", "🐱", "🐶", "🦄", "🐲"];
+
+    const database = {
+        math: {
+            name: "Matematika",
+            icon: "📐",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Matematika: Natural sonlar ustida amallar va arifmetik amallar qonunlari. Hisoblang: 145 + 38 * 2 - 50`, a: `Yechim (${grade}-sinf darsligi): Amallar ketma-ketligiga ko'ra avval ko'paytirish bajariladi: 38 * 2 = 76. So'ngra qo'shish va ayirish: 145 + 76 - 50 = 221 - 50 = 171.`},
+                {q: `${grade}-sinf Matematika: Oddiy va o'nli kasrlar ustida amallar. 3.45 + 1.55 ko'paytirilgan 2 ga.`, a: `Yechim (${grade}-sinf darsligi): Qavs yoki amal tartibiga ko'ra: 1.55 * 2 = 3.1; 3.45 + 3.1 = 6.55.`},
+                {q: `${grade}-sinf Matematika: Foizlar mavzusi. 400 sonining 25 foizini toping.`, a: `Yechim (${grade}-sinf darsligi): 400 * 25 / 100 = 100.`},
+                {q: `${grade}-sinf Matematika: Kvadrat tenglama yoki proporsiya. Agar x / 4 = 15 / 6 bo'lsa, x ni toping.`, a: `Yechim (${grade}-sinf darsligi): Proporsiyaning asosiy xossasiga ko'ra: 6 * x = 4 * 15 => 6x = 60 => x = 10.`},
+                {q: `${grade}-sinf Matematika: Geometrik shakl perimetri. Tomoni 12 sm bo'lgan kvadratning yuzini toping.`, a: `Yechim (${grade}-sinf darsligi): Kvadrat yuzi S = a * a formulasi bo'yicha hisoblanadi: 12 * 12 = 144 sm².`},
+                {q: `${grade}-sinf Matematika: Darajalar xossalari. 2³ * 2⁴ ni soddalashtiring.`, a: `Yechim (${grade}-sinf darsligi): Bir xil asosli darajalarni ko'paytirganda ko'rsatkichlar qo'shiladi: 2^(3+4) = 2⁷ = 128.`},
+                {q: `${grade}-sinf Matematika: Soddalashtiring: 5x + 3 - 2x + 7`, a: `Yechim (${grade}-sinf darsligi): O'xshash hadlar birlashtiriladi: (5x - 2x) + (3 + 7) = 3x + 10.`},
+                {q: `${grade}-sinf Matematika: Doiraning radiusi 7 sm bo'lsa, uning uzunligini toping (π ≈ 3.14).`, a: `Yechim (${grade}-sinf darsligi): L = 2 * π * r = 2 * 3.14 * 7 = 43.96 sm.`},
+                {q: `${grade}-sinf Matematika: Funksiya grafigi. y = 3x - 5 funksiyaning x = 2 bo'lgandagi qiymatini toping.`, a: `Yechim (${grade}-sinf darsligi): x o'rniga 2 qo'yiladi: y = 3(2) - 5 = 6 - 5 = 1.`},
+                {q: `${grade}-sinf Matematika: Arifmetik progressiya yoki ketma-ketlik. 2, 5, 8, 11... keyingi sonni toping.`, a: `Yechim (${grade}-sinf darsligi): Har bir hadi oldingisidan 3 taga ortib bormoqda, shuning uchun keyingi son: 11 + 3 = 14.`},
+                {q: `${grade}-sinf Matematika: Tub sonlar va murakkab sonlar farqi. 17 soni tubmi yoki murakkab?`, a: `Yechim (${grade}-sinf darsligi): 17 faqat 1 ga va o'ziga bo'linadi, shuning uchun u tub son.`},
+                {q: `${grade}-sinf Matematika: Burchaklar turlari. O'tmas burchak necha gradusdan katta bo'lishi kerak?`, a: `Yechim (${grade}-sinf darsligi): O'tmas burchak 90° dan katta va 180° dan kichik bo'ladi.`},
+                {q: `${grade}-sinf Matematika: Tenglamani yeching: 3x - 12 = 0`, a: `Yechim (${grade}-sinf darsligi): 3x = 12 => x = 4.`},
+                {q: `${grade}-sinf Matematika: Uchburchak ichki burchaklari yig'indisi necha gradus?`, a: `Yechim (${grade}-sinf darsligi): Har qanday uchburchakning ichki burchaklari yig'indisi 180° ga teng.`},
+                {q: `${grade}-sinf Matematika: Modul qiymatini hisoblang: |-15| + |5|`, a: `Yechim (${grade}-sinf darsligi): |-15| = 15 va |5| = 5. Yig'indi: 15 + 5 = 20.`},
+                {q: `${grade}-sinf Matematika: Kasrni qisqartiring: 24 / 36`, a: `Yechim (${grade}-sinf darsligi): Surat va maxrajni ularning eng katta umumiy bo'luvchisiga (12 ga) qisqartiramiz: 2 / 3.`},
+                {q: `${grade}-sinf Matematika: 2 soat necha sekundga teng?`, a: `Yechim (${grade}-sinf darsligi): 2 * 60 minut * 60 sekund = 7200 sekund.`},
+                {q: `${grade}-sinf Matematika: Kubning hajmi uning qirrasi a = 4 sm bo'lsa, nimaga teng?`, a: `Yechim (${grade}-sinf darsligi): V = a³ = 4³ = 64 sm³.`},
+                {q: `${grade}-sinf Matematika: Sifatli o'rtacha qiymat. 4, 8, 12 sonlarining arifmetik o'rtachasini toping.`, a: `Yechim (${grade}-sinf darsligi): (4 + 8 + 12) / 3 = 24 / 3 = 8.`},
+                {q: `${grade}-sinf Matematika: Koordinatalar tekisligida A(3, 4) nuqtaning koordinata boshigacha bo'lgan masofasi.`, a: `Yechim (${grade}-sinf darsligi): Pifagor teoremasiga ko'ra d = √(3² + 4²) = √25 = 5.`}
+            ]
+        },
+        physics: {
+            name: "Fizika",
+            icon: "⚡",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Fizika: Fizika fanining asosiy o'rganish obyekti va mexanik harakat tushunchasi.`, a: `Yechim (${grade}-sinf darsligi): Mexanik harakat deb jism vaziyatining vaqt o'tishi bilan boshqa jismlarga nisbatan o'zgarishiga aytiladi.`},
+                {q: `${grade}-sinf Fizika: Zichlik formulasi va uning o'lchov birligi qanday?`, a: `Yechim (${grade}-sinf darsligi): ρ = m / V, birligi kg/m³ yoki g/cm³.`},
+                {q: `${grade}-sinf Fizika: Nyutonning birinchi qonuni (Inersiya qonuni) mazmuni.`, a: `Yechim (${grade}-sinf darsligi): Tashqi kuch ta'sir qilmaguncha jism o'zining tinch holatini yoki to'g'ri chiziqli tekis harakatini saqlaydi.`},
+                {q: `${grade}-sinf Fizika: Kuchni o'lchov birligi nima va u qanday asbobda o'lchanadi?`, a: `Yechim (${grade}-sinf darsligi): Nyuton (N) bilan o'lchanadi, dinamometr asbobidan foydalaniladi.`},
+                {q: `${grade}-sinf Fizika: Bosim formulasi: P = F / S. Sirt yuzi kichiklashsa bosim qanday o'zgaradi?`, a: `Yechim (${grade}-sinf darsligi): Bosim ortadi, chunki bosim yuzaga teskari proporsional.`},
+                {q: `${grade}-sinf Fizika: Arximed kuchi qaysi omillarga bog'liq?`, a: `Yechim (${grade}-sinf darsligi): Suyuqlik zichligi, erkin tushish tezlanishi va jismning botgan qismi hajmiga bog'liq.`},
+                {q: `${grade}-sinf Fizika: Mexanik ish formulasi qanday yoziladi?`, a: `Yechim (${grade}-sinf darsligi): A = F * s * cos(α), bu yerda F kuch, s ko'chish.`},
+                {q: `${grade}-sinf Fizika: Kinetik energiya nimaga teng?`, a: `Yechim (${grade}-sinf darsligi): E_k = (m * v²) / 2.`},
+                {q: `${grade}-sinf Fizika: Potensial energiya formulasi va uning mazmuni.`, a: `Yechim (${grade}-sinf darsligi): E_p = m * g * h, jismning vaziyati va balandligiga bog'liq.`},
+                {q: `${grade}-sinf Fizika: Molekulyar-kinetik nazariyaning asosiy qoidalari.`, a: `Yechim (${grade}-sinf darsligi): Barcha jismlar zarrachalardan tuzilgan, ular uzluksiz tartibsiz harakatda bo'ladi.`},
+                {q: `${grade}-sinf Fizika: Elektr zanjirida tok kuchi qaysi birlikda o'lchanadi?`, a: `Yechim (${grade}-sinf darsligi): Amper (A) bilan o'lchanadi.`},
+                {q: `${grade}-sinf Fizika: Zanjir qismi uchun Ohm qonuni formulasi.`, a: `Yechim (${grade}-sinf darsligi): I = U / R.`},
+                {q: `${grade}-sinf Fizika: Yorug'likning qaytish qonuni qanday ta'riflanadi?`, a: `Yechim (${grade}-sinf darsligi): Tushish burchagi qaytish burchagiga teng: α = β.`},
+                {q: `${grade}-sinf Fizika: Erkin tushish tezlanishi g ning taxminiy qiymati.`, a: `Yechim (${grade}-sinf darsligi): g ≈ 9.8 m/s² (hisoblashda ko'pincha 10 m/s² olinadi).`},
+                {q: `${grade}-sinf Fizika: Issiqlik miqdori formulasi: Q = c * m * (t₂ - t₁). C nimani bildiradi?`, a: `Yechim (${grade}-sinf darsligi): Solishtirma issiqlik sig'imini bildiradi.`},
+                {q: `${grade}-sinf Fizika: Transformator qanday maqsad uchun xizmat qiladi?`, a: `Yechim (${grade}-sinf darsligi): O'zgaruvchan tok kuchlanishini o'zgartirish (pasaytirish yoki oshirish) uchun.`},
+                {q: `${grade}-sinf Fizika: Magnit maydonining asosiy manbai nima?`, a: `Yechim (${grade}-sinf darsligi): Harakatlanuvchi zaryadlangan zarrachalar va elektr toki.`},
+                {q: `${grade}-sinf Fizika: Atom yadrosi nimadan iborat?`, a: `Yechim (${grade}-sinf darsligi): Protonlar va netrondan (nuklonlar).`},
+                {q: `${grade}-sinf Fizika: Vakuumda yorug'lik tezligi qanchaga teng?`, a: `Yechim (${grade}-sinf darsligi): c ≈ 3 * 10⁸ m/s.`},
+                {q: `${grade}-sinf Fizika: Mexanik tebranishlar chastotasi birligi.`, a: `Yechim (${grade}-sinf darsligi): Gerts (Hz) bilan o'lchanadi.`}
+            ]
+        },
+        it: {
+            name: "Informatika",
+            icon: "💻",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Informatika: Kompyuterning asosiy qurilmalari qaysilar?`, a: `Yechim (${grade}-sinf darsligi): Protsessor, tezkor xotira (RAM), qattiq disk (HDD/SSD), ona plata va kiritish-chiqarish qurilmalari.`},
+                {q: `${grade}-sinf Informatika: Axborotni o'lchash birliklari kichigidan kattasiga.`, a: `Yechim (${grade}-sinf darsligi): Bit, Bayt, Kilobayt, Megabayt, Gigabayt, Terabayt.`},
+                {q: `${grade}-sinf Informatika: Algoritm nima va uning asosiy xossalari qanday?`, a: `Yechim (${grade}-sinf darsligi): Maqsadga erishish uchun bajariladigan aniq ko'rsatmalar ketma-ketligi; xossalari: tushunarlilik, aniqlik, ommaviylik, natijalilik.`},
+                {q: `${grade}-sinf Informatika: Fayl kengaytmalari (.txt, .jpg, .mp3) nimani bildiradi?`, a: `Yechim (${grade}-sinf darsligi): Fayl formatini va uni ochuvchi dastur turini ko'rsatadi.`},
+                {q: `${grade}-sinf Informatika: Dasturlash tillarida o'zgaruvchi (variable) deganda nimani tushunasiz?`, a: `Yechim (${grade}-sinf darsligi): Kompyuter xotirasida ma'lumotni saqlash uchun ajratilgan nomlangan katak.`},
+                {q: `${grade}-sinf Informatika: HTML tilida sahifa sarlavhasi qaysi teg yordamida yoziladi?`, a: `Yechim (${grade}-sinf darsligi): <title> tegi yordamida.`},
+                {q: `${grade}-sinf Informatika: Python tilida ekranga matn chiqarish buyrug'i.`, a: `Yechim (${grade}-sinf darsligi): print("Matn")`},
+                {q: `${grade}-sinf Informatika: Internet tarmog'ida ma'lumot uzatish protokoli qanday nomlanadi?`, a: `Yechim (${grade}-sinf darsligi): IP (Internet Protocol) va TCP/HTTP protokollari.`},
+                {q: `${grade}-sinf Informatika: Operatsion tizimga misollar keltiring.`, a: `Yechim (${grade}-sinf darsligi): Windows, macOS, Linux, Android, iOS.`},
+                {q: `${grade}-sinf Informatika: Kompyuter viruslaridan himoya qiluvchi dasturlar qanday ataladi?`, a: `Yechim (${grade}-sinf darsligi): Antivirus dasturlari (masalan, Defender, Kaspersky).`},
+                {q: `${grade}-sinf Informatika: Mantiqiy amallar qaysilar?`, a: `Yechim (${grade}-sinf darsligi): AND (VA), OR (YOKI), NOT (INKOR).`},
+                {q: `${grade}-sinf Informatika: Binar sanoq sistemasida nechta raqam ishlatiladi?`, a: `Yechim (${grade}-sinf darsligi): 2 ta raqam: 0 va 1.`},
+                {q: `${grade}-sinf Informatika: Ma'lumotlar bazasini boshqarish tizimlari (MBBT) qisqartmasi.`, a: `Yechim (${grade}-sinf darsligi): DBMS yoki SQL asosidagi tizimlar.`},
+                {q: `${grade}-sinf Informatika: Tarmoq turlari qaysilar?`, a: `Yechim (${grade}-sinf darsligi): LAN (lokal), MAN (mintaqaviy), WAN (global).`},
+                {q: `${grade}-sinf Informatika: Vektorli va rastrli grafika farqi nimada?`, a: `Yechim (${grade}-sinf darsligi): Rastr piksellardan iborat, vektor esa matematik tenglamalar (chiziq va nuqtalar) asosida quriladi.`},
+                {q: `${grade}-sinf Informatika: Brauzer deganda nimani tushunasiz?`, a: `Yechim (${grade}-sinf darsligi): Veb-sahifalarni ochish va ko'rish uchun mo'ljallangan dastur (Chrome, Edge, Safari).`},
+                {q: `${grade}-sinf Informatika: Python da shart operatori qanday yoziladi?`, a: `Yechim (${grade}-sinf darsligi): if shart: ... else: ...`},
+                {q: `${grade}-sinf Informatika: Kesh xotiraning vazifasi nima?`, a: `Yechim (${grade}-sinf darsligi): Tez-tez ishlatiladigan ma'lumotlarni saqlab, tezlikni oshirish.`},
+                {q: `${grade}-sinf Informatika: Kiberxavfsizlik nima?`, a: `Yechim (${grade}-sinf darsligi): Kompyuter tizimlari va ma'lumotlarni kiberhujumlardan himoya qilish sohasi.`},
+                {q: `${grade}-sinf Informatika: Sun'iy intellekt (AI) tushunchasining mazmuni.`, a: `Yechim (${grade}-sinf darsligi): Kompyuter tizimlarining inson kabi fikrlashi, o'rganishi va qaror qabul qilishi.`}
+            ]
+        },
+        history: {
+            name: "O'zbekiston tarixi",
+            icon: "📜",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf O'zbekiston tarixi: Qadimgi O'rta Osiyo sivilizatsiyalari va ilk shaharsozlik.`, a: `Yechim (${grade}-sinf darsligi): Sug'd, Baqtriya va Xorazm kabi qadimgi davlat birlashmalari.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Buyuk Ipak yo'lining mintaqa tarixidagi ahamiyati.`, a: `Yechim (${grade}-sinf darsligi): Sharq va G'arb o'rtasida savdo, madaniyat va fan almashinuvini ta'minlagan.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: IX-XII asrlarda Sharq Renessansi va buyuk allomalar.`, a: `Yechim (${grade}-sinf darsligi): Al-Xorazmiy, Ibn Sino, Beruniy va Farg'oniy kabi olimlarning ilmiy kashfiyotlari.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Amir Temur davlati va uning poytaxti.`, a: `Yechim (${grade}-sinf darsligi): XIV-XV asrlarda tashkil topgan kuchli markazlashgan davlat, poytaxti Samarqand shahri.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Temuriylar davrida ilm-fan va madaniyat yuksalishi.`, a: `Yechim (${grade}-sinf darsligi): Mirzo Ulug'bek rasadxonasi va madrasalar qurilishi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: XVI asrda Movarounnahrda Shayboniylar sulolasi hokimiyatga kelishi.`, a: `Yechim (${grade}-sinf darsligi): Temuriylar saltanati o'rniga yangi sulola hokimiyati o'rnatildi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Xiva, Buxoro va Qo'qon xonliklarining tashkil topishi.`, a: `Yechim (${grade}-sinf darsligi): XVI-XVIII asrlarda uchta mustaqil xonlik shakllandi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: XIX asrning 60-70-yillarida Rossiya imperiyasi tomonidan Turkistonning bosib olinishi.`, a: `Yechim (${grade}-sinf darsligi): Mintaqa Rossiya tasarrufiga o'tib, Turkiston general-gubernatorligi tuzildi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: XX asr boshlarida Jadidchilik harakatining yuzaga kelishi.`, a: `Yechim (${grade}-sinf darsligi): Mahmudxo'ja Behbudiy boshchiligida yangi usul maktablari va ma'rifatparvarlik harakati boshlandi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: 1991 yil 31 avgustda O'zbekiston Respublikasi Davlat Mustaqilligining e'lon qilinishi.`, a: `Yechim (${grade}-sinf darsligi): O'zbekiston o'z mustaqilligiga erishib, suveren davlatga aylandi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Avesto kitobi qaysi qadimgi davrga oid yodgorlik?`, a: `Yechim (${grade}-sinf darsligi): Zardo'zlik va qadimgi Markaziy Osiyo xalqlarining muqaddas kitobi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Spitamen boshchiligidagi ozodlik kurashi kimga qarshi bo'lgan?`, a: `Yechim (${grade}-sinf darsligi): Aleksandr Makedoniyalik istilochilariga qarshi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Muqanna boshchiligidagi 'Oq kiyimlilar' qo'zg'oloni qachon bo'lgan?`, a: `Yechim (${grade}-sinf darsligi): VIII asrning 70-80-yillarida Arab xalifaligiga qarshi.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Zahiriddin Muhammad Bobur tomonidan Boburiylar saltanati qaysi davlatda tuzilgan?`, a: `Yechim (${grade}-sinf darsligi): Hindistonda (1526 yilda).`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Alisher Navoiy yashab ijod qilgan davr.`, a: `Yechim (${grade}-sinf darsligi): XV asr (Temuriylar davri).`},
+                {q: `${grade}-sinf O'zbekiston tarixi: O'zbekiston Respublikasining ilk Konstitutsiyasi qachon qabul qilingan?`, a: `Yechim (${grade}-sinf darsligi): 1992 yil 8 dekabrda.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Imom Al-Buxoriy qanday buyuk asar muallifi?`, a: `Yechim (${grade}-sinf darsligi): 'Al-Jome' as-sahih' (Hadislar to'plami).`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Toshkent shahri qachon 2000 yillik yubileyini nishonlagan?`, a: `Yechim (${grade}-sinf darsligi): 2009 yilda YUNESCO shafeligida.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: O'zbekiston bayrog'i qachon tasdiqlangan?`, a: `Yechim (${grade}-sinf darsligi): 1991 yil 18 noyabrda.`},
+                {q: `${grade}-sinf O'zbekiston tarixi: Qadimgi Tuproqqal'a yodgorligi qayerda joylashgan?`, a: `Yechim (${grade}-sinf darsligi): Xorazm vohasida.`}
+            ]
+        },
+        literature: {
+            name: "Ona tili va Adabiyot",
+            icon: "📚",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Ona tili va Adabiyot: O'zbek adabiy tilining asosiy me'yorlari (leksik, grammatik, imlo).`, a: `Yechim (${grade}-sinf darsligi): Savodxonlikni ta'minlovchi fonetik va imlo qoidalari to'plami.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Abdulla Qodiriyning 'O'tkan kunlar' romanidagi bosh qahramonlar.`, a: `Yechim (${grade}-sinf darsligi): Otabek va Kumushbibi obrazlari.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Cho'lpon ijodi va uning lirikasidagi ozodlik g'oyalari.`, a: `Yechim (${grade}-sinf darsligi): Xalqni uyg'otish va erksevarlik ruhidagi she'rlar.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Erkin Vohidovning 'O'zbegim' qasidasining asosiy g'oyasi.`, a: `Yechim (${grade}-sinf darsligi): O'zbek xalqining buyuk tarixi, madaniyati va matonatini ulug'lash.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Qo'shma gap turlari va ularning tuzilishi.`, a: `Yechim (${grade}-sinf darsligi): Bog'langan, erashgan va bog'lovchisiz qo'shma gaplar.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Fitrat qalamiga mansub dramatik asarlar.`, a: `Yechim (${grade}-sinf darsligi): 'Abulfayzxon' va 'Temur sag'anasi'.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: G'afur G'ulomning 'Shum bola' qissasining janr xususiyati.`, a: `Yechim (${grade}-sinf darsligi): Humoristik va avtobiografik ruhdagi asar.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Mumtoz adabiyotda ruboiy va tuyuq janrlarining o'ziga xosligi.`, a: `Yechim (${grade}-sinf darsligi): To'rtlik shaklida yozilib, o'ziga xos qofiyalanish tizimiga ega.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: O'tkir Hoshimovning 'Dunyoning ishlari' asarining bosh g'oyasi.`, a: `Yechim (${grade}-sinf darsligi): Ona mehri, muqaddasligi va insoniy burchlar.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Alisher Navoiyning 'Xamsa' dostonlari tarkibiga kiruvchi asarlar.`, a: `Yechim (${grade}-sinf darsligi): 'Hayrat ul-abror', 'Farhod va Shirin', 'Layli va Majnun', 'Sabtai Seyyor', 'Saddi Iskandariy'.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Gapning bosh bo'laklari qaysilar?`, a: `Yechim (${grade}-sinf darsligi): Ega va kesim.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Sifat so'z turkumi qanday so'roqlarga javob bo'ladi?`, a: `Yechim (${grade}-sinf darsligi): Qanday? Qaysi?`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Fe'l zamonlari nechta?`, a: `Yechim (${grade}-sinf darsligi): 3 ta: o'tgan, hozirgi va kelasi zamon.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Beruniyning ilmiy-adabiy merosi.`, a: `Yechim (${grade}-sinf darsligi): Qadimgi xalqlardan qolgan yodgorliklar.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Primqul Qodirovning 'Yulduzli tunlar' romani kimga bag'ishlangan?`, a: `Yechim (${grade}-sinf darsligi): Zahiriddin Muhammad Bobur hayoti va taqdiriga.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Frazeologizm deganda nimani tushunasiz?`, a: `Yechim (${grade}-sinf darsligi): Ma'nosi ko'chma bo'lgan turg'un so'z birikmalari.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Mahmudxo'ja Behbudiyning mashhur dramasi.`, a: `Yechim (${grade}-sinf darsligi): 'Padarkush' dramasi.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: O'zbekiston Qahramoni unvonini olgan shoirlar.`, a: `Yechim (${grade}-sinf darsligi): Erkin Vohidov va Abdulla Oripov.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Uyushgan bo'laklar qanday belgiga ega?`, a: `Yechim (${grade}-sinf darsligi): Bir xil so'roqqa javob bo'lib, bir xil gap bo'lagiga bog'lanadi.`},
+                {q: `${grade}-sinf Ona tili va Adabiyot: Zulfiya ijodining asosiy lirik mavzulari.`, a: `Yechim (${grade}-sinf darsligi): Vatan, sadoqat, bahor va insoniy muhabbat.`}
+            ]
+        },
+        geography: {
+            name: "Geografiya",
+            icon: "🌍",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Geografiya: Yer yuzining geografik qobig'i va uning tarkibiy qismlari.`, a: `Yechim (${grade}-sinf darsligi): Litosfera, gidrosfera, atmosfera va biosferaning o'zaro ta'sir sohasi.`},
+                {q: `${grade}-sinf Geografiya: Materiklar va okeanlarning joylashuvi hamda umumiy tavsifi.`, a: `Yechim (${grade}-sinf darsligi): 6 ta materik va 5 ta okeandan iborat suv-quruqlik tizimi.`},
+                {q: `${grade}-sinf Geografiya: O'zbekistonning iqtisodiy-geografik o'rni va chegaralari.`, a: `Yechim (${grade}-sinf darsligi): Markaziy Osiyo markazida joylashgan, 5 ta qo'shni davlat bilan chegaradosh.`},
+                {q: `${grade}-sinf Geografiya: Jahon xo'jaligining tarmoq va hududiy tuzilishi.`, a: `Yechim (${grade}-sinf darsligi): Xalqaro mehnat taqsimoti va jahon bozori asosida shakllanadi.`},
+                {q: `${grade}-sinf Geografiya: O'zbekistonning mineral-xomashyo resurslari va konlari.`, a: `Yechim (${grade}-sinf darsligi): Oltin, mis, uran, tabiiy gaz va ko'mir zaxiralari.`},
+                {q: `${grade}-sinf Geografiya: Aholining takror barpo etilishi va demografik jarayonlar.`, a: `Yechim (${grade}-sinf darsligi): Tug'ilish, o'lish va tabiiy o'sish ko'rsatkichlari yig'indisi.`},
+                {q: `${grade}-sinf Geografiya: Urbanizatsiya jarayoni va uning zamonaviy xususiyatlari.`, a: `Yechim (${grade}-sinf darsligi): Shaharlarning o'sishi va shahar aholisi ulushining ortishi.`},
+                {q: `${grade}-sinf Geografiya: Yer yuzidagi eng baland cho'qqi qaysi va u qayerda?`, a: `Yechim (${grade}-sinf darsligi): Jomolungma (Everest) cho'qqisi, Himolay tog'larida (8848 m).`},
+                {q: `${grade}-sinf Geografiya: Dunyodagi eng uzun daryo qaysi?`, a: `Yechim (${grade}-sinf darsligi): Nil darsligi (Afrikada).`},
+                {q: `${grade}-sinf Geografiya: O'zbekistonning eng baland nuqtasi qaysi?`, a: `Yechim (${grade}-sinf darsligi): Hazrat Sulton cho'qqisi (Hisor tog'larida, 4643 m).`},
+                {q: `${grade}-sinf Geografiya: Tinch okeani dunyodagi eng katta okean ekanligi va uning xususiyatlari.`, a: `Yechim (${grade}-sinf darsligi): Eng katta va chuqur okean hisoblanadi.`},
+                {q: `${grade}-sinf Geografiya: Atmosfera bosimi qaysi asbob yordamida o'lchanadi?`, a: `Yechim (${grade}-sinf darsligi): Barometr asbobi yordamida.`},
+                {q: `${grade}-sinf Geografiya: O'zbekistonda qishloq xo'jaligining asosiy ixtisoslashuvi.`, a: `Yechim (${grade}-sinf darsligi): Paxtachilik, g'allachilik va bog'dorchilik.`},
+                {q: `${grade}-sinf Geografiya: Dunyo aholisi soni hozirgi kunda qancha miqdordan oshgan?`, a: `Yechim (${grade}-sinf darsligi): 8 milliarddan oshgan.`},
+                {q: `${grade}-sinf Geografiya: Orol dengizi ekologik muammosining kelib chiqish sabablari.`, a: `Yechim (${grade}-sinf darsligi): Daryo suvlaridan haddan tashqari ko'p foydalanish va sug'orish tizimi.`},
+                {q: `${grade}-sinf Geografiya: Toshkent shahri qaysi daryo vodiysida joylashgan?`, a: `Yechim (${grade}-sinf darsligi): Chirchiq daryosi vodiysida.`},
+                {q: `${grade}-sinf Geografiya: Geografik kenglik va uzunlik nimani bildiradi?`, a: `Yechim (${grade}-sinf darsligi): Yer yuzidagi nuqtaning koordinatalarini belgilovchi chiziqlar.`},
+                {q: `${grade}-sinf Geografiya: Cho'l zonalari uchun xarakterli iqlim sharoitlari.`, a: `Yechim (${grade}-sinf darsligi): Yog'ingarchilik kam, havo harorati keskin kontinental.`},
+                {q: `${grade}-sinf Geografiya: Sirdaryo va Amudaryo qayerga quyiladi?`, a: `Yechim (${grade}-sinf darsligi): Ilgarigidek Orol dengizi havzasiga quyilgan.`},
+                {q: `${grade}-sinf Geografiya: Foydali qazilmalar qanday turlarga bo'linadi?`, a: `Yechim (${grade}-sinf darsligi): Yonuvchi, metalli va nometalli foydali qazilmalar.`}
+            ]
+        },
+        chemistry: {
+            name: "Kimyo",
+            icon: "🧪",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Kimyo: Kimyoviy element tushunchasi va D.I. Mendeleyev davriy jadvali.`, a: `Yechim (${grade}-sinf darsligi): Atom yadrosi zaryadiga ko'ra tartiblangan elementlar tizimi.`},
+                {q: `${grade}-sinf Kimyo: Moddalarning molekulyar va atom tuzilishi, valentlik tushunchasi.`, a: `Yechim (${grade}-sinf darsligi): Atomlarning boshqa atomlarni biriktirib olish qobiliyati.`},
+                {q: `${grade}-sinf Kimyo: Kimyoviy reaksiya turlari (birikish, o'rin olish, parchalanish, almashinish).`, a: `Yechim (${grade}-sinf darsligi): Reaksiya natijasida yangi moddalar hosil bo'lish jarayoni turlari.`},
+                {q: `${grade}-sinf Kimyo: Suvning kimyoviy formulasi va uning xossalari.`, a: `Yechim (${grade}-sinf darsligi): H₂O, universal erituvchi hisoblanadi.`},
+                {q: `${grade}-sinf Kimyo: Kislotalar, asoslar va tuzlar tasnifi.`, a: `Yechim (${grade}-sinf darsligi): Elektrolitik disotsiatsiyaga uchraydigan muhim birikmalar sinfi.`},
+                {q: `${grade}-sinf Kimyo: Reaksiya tezligiga ta'sir etuvchi omillar (harorat, konsentratsiya, katalizator).`, a: `Yechim (${grade}-sinf darsligi): Reaksiyaning borish tezligini o'zgartiruvchi shartlar.`},
+                {q: `${grade}-sinf Kimyo: Organik kimyo asoslari: uglevodorodlar va alkanlar qatori.`, a: `Yechim (${grade}-sinf darsligi): To'yingan uglevodorodlar umumiy formulasi CnH2n+2.`},
+                {q: `${grade}-sinf Kimyo: Alkenlar va alkinlarning tuzilishi hamda qo'sh bog'lanishlar.`, a: `Yechim (${grade}-sinf darsligi): Qo'sh va uch bog'li to'yinmagan uglevodorodlar.`},
+                {q: `${grade}-sinf Kimyo: Kislorod va vodorod gazlarining olingan usullari va xossalari.`, a: `Yechim (${grade}-sinf darsligi): O₂ va H₂ tabiatdagi eng muhim gazsimon moddalar.`},
+                {q: `${grade}-sinf Kimyo: Sulfat kislota va uning sanoatdagi ahamiyati.`, a: `Yechim (${grade}-sinf darsligi): H₂SO₄, kimyo sanoatining 'noni' deb ataladi.`},
+                {q: `${grade}-sinf Kimyo: Osh tuzining kimyoviy nomi va formulasi.`, a: `Yechim (${grade}-sinf darsligi): Natriy xlorid (NaCl).`},
+                {q: `${grade}-sinf Kimyo: Kislotali muhitda pH ko'rsatkichi qanday bo'ladi?`, a: `Yechim (${grade}-sinf darsligi): pH 7 dan kichik bo'ladi.`},
+                {q: `${grade}-sinf Kimyo: Ishqoriy muhitda pH ko'rsatkichi.`, a: `Yechim (${grade}-sinf darsligi): pH 7 dan katta bo'ladi.`},
+                {q: `${grade}-sinf Kimyo: Havo tarkibidagi asosiy gazlar nisbati.`, a: `Yechim (${grade}-sinf darsligi): 78% Azot, 21% Kislorod va boshqa gazlar.`},
+                {q: `${grade}-sinf Kimyo: Kalsiy karbonat kimyoviy formulasi qanday?`, a: `Yechim (${grade}-sinf darsligi): CaCO₃ (ohaktosh, bo'r).`},
+                {q: `${grade}-sinf Kimyo: Ozon qatlami formulasi va uning vazifasi.`, a: `Yechim (${grade}-sinf darsligi): O₃, yer yuzini ultrabinafsha nurlardan himoya qiladi.`},
+                {q: `${grade}-sinf Kimyo: Alkogollar va ularning funksional guruhi.`, a: `Yechim (${grade}-sinf darsligi): Gidroksil guruhi (-OH) tutgan organik birikmalar.`},
+                {q: `${grade}-sinf Kimyo: Mendeleyev jadvalidagi tabiatda mavjud elementlar soni.`, a: `Yechim (${grade}-sinf darsligi): Jami 118 ta element ma'lum.`},
+                {q: `${grade}-sinf Kimyo: Eritmalar konsentratsiyasini hisoblash usuli.`, a: `Yechim (${grade}-sinf darsligi): Erigan modda massasining eritma massasiga nisbati (foizda).`},
+                {q: `${grade}-sinf Kimyo: Metallarning umumiy fizik xossalari.`, a: `Yechim (${grade}-sinf darsligi): Elektr va issiqlikni yaxshi o'tkazishi, yaltirashi.`}
+            ]
+        },
+        biology: {
+            name: "Biologiya",
+            icon: "🧬",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Biologiya: Hujayra tuzilishi, organoidlari va ularning vazifalari.`, a: `Yechim (${grade}-sinf darsligi): Sitoplazma, yadro, mitoxondriya va ribosomalar majmui.`},
+                {q: `${grade}-sinf Biologiya: O'simliklar va hayvonlar hujayrasining o'zaro farqi.`, a: `Yechim (${grade}-sinf darsligi): O'simlik hujayrasida qattiq qobiq va xloroplastlar bo'ladi.`},
+                {q: `${grade}-sinf Biologiya: Fotosintez jarayoni qayerda sodir bo'ladi va nima hosil qiladi?`, a: `Yechim (${grade}-sinf darsligi): Xloroplastlarda yorug'lik ta'sirida glyukoza va kislorod hosil bo'ladi.`},
+                {q: `${grade}-sinf Biologiya: Mitoz va meyoz hujayra bo'linishlarining asosiy farqi.`, a: `Yechim (${grade}-sinf darsligi): Mitoz natijasida 2 ta bir xil, meyozda 4 ta jinsiy hujayra hosil bo'ladi.`},
+                {q: `${grade}-sinf Biologiya: Mendel qonunlari va irsiyat qonuniyatlari.`, a: `Yechim (${grade}-sinf darsligi): Belgilarning avloddan-avlodga o'tish qonuniyatlari.`},
+                {q: `${grade}-sinf Biologiya: DNK molekulasining tuzilishi va replikatsiya jarayoni.`, a: `Yechim (${grade}-sinf darsligi): Qo'sh spiral shaklida bo'lib, irsiy axborotni saqlaydi.`},
+                {q: `${grade}-sinf Biologiya: Odam organizmidagi to'qimalar turlari.`, a: `Yechim (${grade}-sinf darsligi): Epiteliy, biriktiruvchi, muskul va asab to'qimalari.`},
+                {q: `${grade}-sinf Biologiya: Yurak-qon tomir tizimi va qon aylanish doiralari.`, a: `Yechim (${grade}-sinf darsligi): Katta va kichik qon aylanish doiralari.`},
+                {q: `${grade}-sinf Biologiya: Ekologiya fanining asosiy vazifalari va biotsenoz.`, a: `Yechim (${grade}-sinf darsligi): Tirik organizmlarning atrof-muhit bilan o'zaro munosabatlarini o'rganadi.`},
+                {q: `${grade}-sinf Biologiya: Darvinning evolyutsiya nazariyasi va tabiiy tanlanish.`, a: `Yechim (${grade}-sinf darsligi): Yashovchan turlarning tabiiy tanlanish natijasida saqlanib qolishi.`},
+                {q: `${grade}-sinf Biologiya: Odam organizmida suyaklar soni taxminan qancha?`, a: `Yechim (${grade}-sinf darsligi): 206 ta suyak mavjud.`},
+                {q: `${grade}-sinf Biologiya: Inson qon guruhlari nechta asosiy guruhga bo'linadi?`, a: `Yechim (${grade}-sinf darsligi): 4 ta asosiy guruh (I, II, III, IV).`},
+                {q: `${grade}-sinf Biologiya: Odamda nechta juft xromosoma mavjud?`, a: `Yechim (${grade}-sinf darsligi): 23 juft (jami 46 ta).`},
+                {q: `${grade}-sinf Biologiya: Asab sistemasining asosiy tarkibiy birligi qaysi?`, a: `Yechim (${grade}-sinf darsligi): Neyron hujjaysi.`},
+                {q: `${grade}-sinf Biologiya: Bakteriyalar qaysi hujayraviy guruhga kiradi?`, a: `Yechim (${grade}-sinf darsligi): Prokaryotlar (yadroga ega bo'lmaganlar).`},
+                {q: `${grade}-sinf Biologiya: O'simliklarda suv va ozuqa moddalarni tashuvchi to'qima.`, a: `Yechim (${grade}-sinf darsligi): Yog'ochlik (ksilema) va naylar.`},
+                {q: `${grade}-sinf Biologiya: Viruslar hujayrali tuzilmasiga egami?`, a: `Yechim (${grade}-sinf darsligi): Yo'q, ular huayrasiz shakldagi parazitlardir.`},
+                {q: `${grade}-sinf Biologiya: Yer yuzidagi eng yirik sutemizuvchi hayvon.`, a: `Yechim (${grade}-sinf darsligi): Ko'k kit.`},
+                {q: `${grade}-sinf Biologiya: Genetika fanining asoschisi kim?`, a: `Yechim (${grade}-sinf darsligi): Gregor Mendel.`},
+                {q: `${grade}-sinf Biologiya: Nafas olish organlari tizimining asosiy qismi.`, a: `Yechim (${grade}-sinf darsligi): O'pka va nafas yo'llari.`}
+            ]
+        },
+        english: {
+            name: "Ingliz tili",
+            icon: "🇬🇧",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Ingliz tili: Zamonaviy ingliz tili grammatikasi va zamonlar tizimi (Tenses).`, a: `Yechim (${grade}-sinf darsligi): Present, Past va Future Simple/Continuous zamonlari qoidalari.`},
+                {q: `${grade}-sinf Ingliz tili: Passive Voice (Majhul nisbat) yasalish qoidalari.`, a: `Yechim (${grade}-sinf darsligi): to be + V₃ (ed) yordamida yasaladi.`},
+                {q: `${grade}-sinf Ingliz tili: Modal verbs (Can, could, must, should) ishlatilish holatlari.`, a: `Yechim (${grade}-sinf darsligi): Imkoniyat, majburiyat va maslahat bildirish uchun qo'llaniladi.`},
+                {q: `${grade}-sinf Ingliz tili: Conditionals (Shart gaplar: Zero, First, Second, Third).`, a: `Yechim (${grade}-sinf darsligi): If bog'lovchisi yordamida ehtimollikni bildirish.`},
+                {q: `${grade}-sinf Ingliz tili: Reported Speech (O'zlashtirma gaplar) qoidalari.`, a: `Yechim (${grade}-sinf darsligi): Ko'chirma gapni boshqa shaxs nomidan gapirib berish va zamonni o'zgartirish.`},
+                {q: `${grade}-sinf Ingliz tili: Relative clauses (Who, which, that, where) yordamida ergash gaplar.`, a: `Yechim (${grade}-sinf darsligi): Aniqlovchi ergash gaplarni bog'lash uchun ishlatiladi.`},
+                {q: `${grade}-sinf Ingliz tili: Gerund va Infinitive (V-ing va to V) fe'ldan keyingi ishlatilishi.`, a: `Yechim (${grade}-sinf darsligi): Ba'zi fe'llardan keyin fe'l -ing yoki to bilan keladi.`},
+                {q: `${grade}-sinf Ingliz tili: Sifatlarning qiyosiy va orttirma darajalari (Comparative & Superlative).`, a: `Yechim (${grade}-sinf darsligi): -er / more va -est / most qo'shimchalari orqali yasaladi.`},
+                {q: `${grade}-sinf Ingliz tili: Phrasal verbs (Frazali fe'llar) va ularning ma'nolari.`, a: `Yechim (${grade}-sinf darsligi): Fe'l va ko'makchidan tashkil topgan ko'chma ma'noli birikmalar.`},
+                {q: `${grade}-sinf Ingliz tili: English alphabet (Ingliz alifbosi) harflari soni qancha?`, a: `Yechim (${grade}-sinf darsligi): 26 ta harfdan iborat.`},
+                {q: `${grade}-sinf Ingliz tili: Vowels (Unli tovushlar) soni nechta?`, a: `Yechim (${grade}-sinf darsligi): 5 ta asosiy unli (a, e, i, o, u).`},
+                {q: `${grade}-sinf Ingliz tili: 'Child' so'zining ko'plik shakli qanday?`, a: `Yechim (${grade}-sinf darsligi): Children.`},
+                {q: `${grade}-sinf Ingliz tili: 'Good' sifatining qiyosiy darajasi qanday bo'ladi?`, a: `Yechim (${grade}-sinf darsligi): Better.`},
+                {q: `${grade}-sinf Ingliz tili: 'Bad' sifatining orttirma darajasi qanday?`, a: `Yechim (${grade}-sinf darsligi): The worst.`},
+                {q: `${grade}-sinf Ingliz tili: Present Perfect zamoni yordamchi fe'llari.`, a: `Yechim (${grade}-sinf darsligi): Have yoki has + V₃.`},
+                {q: `${grade}-sinf Ingliz tili: 'Go' noto'g'ri fe'lining Past Simple shakli.`, a: `Yechim (${grade}-sinf darsligi): Went.`},
+                {q: `${grade}-sinf Ingliz tili: Future Simple uchun ishlatiladigan yordamchi fe'l.`, a: `Yechim (${grade}-sinf darsligi): Will.`},
+                {q: `${grade}-sinf Ingliz tili: Sinonim tushunchasi nimani anglatadi?`, a: `Yechim (${grade}-sinf darsligi): Ma'nosi bir xil yoki yaqin bo'lgan so'zlar.`},
+                {q: `${grade}-sinf Ingliz tili: Antonim so'zlar deganda nimani tushunasiz?`, a: `Yechim (${grade}-sinf darsligi): Ma'nosi bir-biriga qarama-qarshi bo'lgan so'zlar.`},
+                {q: `${grade}-sinf Ingliz tili: 'Happy' so'zining sinonimi.`, a: `Yechim (${grade}-sinf darsligi): Glad, joyful yoki pleased.`}
+            ]
+        },
+        finance: {
+            name: "Moliyaviy savodxonlik",
+            icon: "📈",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Shaxsiy va oilaviy byudjetni rejalashtirish asoslari.`, a: `Yechim (${grade}-sinf darsligi): Daromad va xarajatlarni oqilona taqsimlash qoidalari.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Jamg'arish madaniyati va moliyaviy xavfsizlik yostiqchasi.`, a: `Yechim (${grade}-sinf darsligi): Kutilmagan vaziyatlar uchun mablag' yig'ib borish muhimligi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Bank xizmatlari: omonatlar, depozitlar va plastik kartalar.`, a: `Yechim (${grade}-sinf darsligi): Pul mablag'larini xavfsiz saqlash va ko'paytirish vositalari.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Kreditlar va ularning turlari, foiz stavkalari.`, a: `Yechim (${grade}-sinf darsligi): Qarzga olingan mablag' uchun bankka to'lanadigan qo'shimcha haq.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Soliqlar va ularning davlat hamda jamiyat hayotidagi o'rni.`, a: `Yechim (${grade}-sinf darsligi): Davlat byudjetini shakllantiruvchi majburiy to'lovlar.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Inflyatsiya tushunchasi va uning pullarga ta'siri.`, a: `Yechim (${grade}-sinf darsligi): Pulning qadrsizlanishi va narxlarning oshib borishi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Investitsiya asoslari va qimmatli qog'ozlar (aksiya, obligatsiya).`, a: `Yechim (${grade}-sinf darsligi): Daromad olish maqsadida kapitalni o'stirib borish yo'llari.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Tadbirkorlik va kichik biznesni boshlash tamoyillari.`, a: `Yechim (${grade}-sinf darsligi): O'z biznes g'oyasini amalga oshirish va risklarni boshqarish.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Iste'molchilar huquqlarini himoya qilish asoslari.`, a: `Yechim (${grade}-sinf darsligi): Xarid qilingan tovar yoki xizmat sifatini talab qilish huquqi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Raqamli moliyaviy savodxonlik va kiberfiribgarlikdan himoya.`, a: `Yechim (${grade}-sinf darsligi): Bank kartasi ma'lumotlarini sir saqlash va internetda ehtiyotkorlik.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Daromad turlari qaysilar?`, a: `Yechim (${grade}-sinf darsligi): Ish haqi, stipendiya, pensiya, dividend va ijara daromadlari.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Ehtiyoj va istak farqi nimada?`, a: `Yechim (${grade}-sinf darsligi): Ehtiyoj yashash uchun shart bo'lgan narsa, istak esa shunchaki xohish.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Aksiya egasiga nima huquq beradi?`, a: `Yechim (${grade}-sinf darsligi): Kompaniya mulkining bir qismiga egalik qilish va dividend olish huquqi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Obligatsiya qanday moliyaviy vosita?`, a: `Yechim (${grade}-sinf darsligi): Qarz majburiyati bo'lib, belgilangan foizda daromad keltiradi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Valyuta kursi nima?`, a: `Yechim (${grade}-sinf darsligi): Bir mamlakat pul birligining boshqa davlat valyutasidagi nisbati.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Moliyaviy maqsad qo'yish nima beradi?`, a: `Yechim (${grade}-sinf darsligi): Pulni reja asosida yig'ish va ortiqcha xarajatlarning oldini olish.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Sug'urta nima uchun kerak?`, a: `Yechim (${grade}-sinf darsligi): Kutilmagan yo'qotishlar va xatarlardan moliyaviy himoyalanish uchun.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Startap loyiha nima?`, a: `Yechim (${grade}-sinf darsligi): Yangi innovatsion va tez rivojlanishga mo'ljallangan biznes g'oya.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Pulning asosiy vazifalari.`, a: `Yechim (${grade}-sinf darsligi): Muomala vositasi, qiymat o'lchovi va jamg'arish vositasi.`},
+                {q: `${grade}-sinf Moliyaviy savodxonlik: Moliyaviy xavfsizlik qoidasi nimadan iborat?`, a: `Yechim (${grade}-sinf darsligi): Parollar va shaxsiy ma'lumotlarni hech kimga bermaslik.`}
+            ]
+        },
+        law: {
+            name: "Huquqiy savodxonlik",
+            icon: "⚖️",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Huquqiy savodxonlik: O'zbekiston Respublikasining Konstitutsiyasi va uning oliy yuridik kuchi.`, a: `Yechim (${grade}-sinf darsligi): Mamlakatning asosiy Qonuni bo'lib, barcha qonunlar unga asoslanadi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Inson huquqlari, erkinliklari va asosiy burchlari.`, a: `Yechim (${grade}-sinf darsligi): Konstitutsiya bilan kafolatlangan shaxsiy va siyosiy huquqlar.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: O'zbekistonda jinoyat javobgarligi necha yoshdan boshlanadi?`, a: `Yechim (${grade}-sinf darsligi): Umid qilingan umumiy tartibda 16 yoshdan (ayrim og'ir jinoyatlar uchun 14 yoshdan).`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Mehnat kodeksiga ko'ra voyaga yetmaganlar uchun ish vaqti.`, a: `Yechim (${grade}-sinf darsligi): Salomatligi va o'qishiga xalaqit bermaydigan qisqartirilgan ish vaqti.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Nikoh tuzish uchun qonuniy belgilangan yosh.`, a: `Yechim (${grade}-sinf darsligi): O'zbekiston Respublikasi Oila kodeksiga ko'ra 18 yosh.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Ma'muriy huquqbuzarlik va jinoyatning farqi nimada?`, a: `Yechim (${grade}-sinf darsligi): Ma'muriy qilmish ijtimoiy xavfliligi kamroq bo'lgan huquqbuzarlikdir.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Oliy qonun chiqaruvchi davlat organi qanday nomlanadi?`, a: `Yechim (${grade}-sinf darsligi): O'zbekiston Respublikasi Oliy Majlisi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Saylov huquqi fuqarolarga necha yoshdan beriladi?`, a: `Yechim (${grade}-sinf darsligi): 18 yoshdan boshlab universal saylov huquqi beriladi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Mulk huquqi mazmuni: egalik qilish, foydalanish va tasarruf etish.`, a: `Yechim (${grade}-sinf darsligi): Shaxsning o'z mulkiga to'laqonli xo'jayin bo'lish huquqi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Notarius va advokatning huquqiy faoliyatdagi vazifalari.`, a: `Yechim (${grade}-sinf darsligi): Notarius huquqiy hujjatlarni tasdiqlaydi, advokat huquqni himoya qiladi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Inson huquqlari umumjahon deklaratsiyasi qachon qabul qilingan?`, a: `Yechim (${grade}-sinf darsligi): 1948 yil 10 dekabrda BMT tomonidan.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Prezidentlik lavozimiga nomzodga qo'yiladigan yosh talabi.`, a: `Yechim (${grade}-sinf darsligi): 35 yoshdan kam bo'lmagan O'zbekiston fuqarosi.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Sud hokimiyatining asosiy vazifasi nima?`, a: `Yechim (${grade}-sinf darsligi): Odil sudlovni amalga oshirish va huquqlarni tiklash.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Prokuratura organlari qanday nazoratni amalga oshiradi?`, a: `Yechim (${grade}-sinf darsligi): Qonunlarning aniq va bir xilda bajarilishini nazorat qilish.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: O'zbekistonning davlat tili qaysi til?`, a: `Yechim (${grade}-sinf darsligi): O'zbek tili.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Guvohning huquqiy jarayondagi burchi nima?`, a: `Yechim (${grade}-sinf darsligi): Faqat to'g'ri va rost ko'rsatma berish.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Mehnat shartnomasi kimlar o'rtasida tuziladi?`, a: `Yechim (${grade}-sinf darsligi): Xodim va ish beruvchi o'rtasida yozma ravishda.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Iste'molchi huquqlarini buzilganda qayerga murojaat qilinadi?`, a: `Yechim (${grade}-sinf darsligi): Iste'molchilar huquqlarini himoya qilish jamiyatiga yoki sudga.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Voyaga yetmaganlarning huquqiy himoyasi kimlar tomonidan ta'minlanadi?`, a: `Yechim (${grade}-sinf darsligi): Ota-ona, vasiylar va davlat organlari.`},
+                {q: `${grade}-sinf Huquqiy savodxonlik: Qonun oldida tenglik prinsipi nimani anglatadi?`, a: `Yechim (${grade}-sinf darsligi): Barcha fuqarolar jinsi, millati va ijtimoiy maqomidan qat'iy nazar qonun oldida tengdir.`}
+            ]
+        },
+        psychology: {
+            name: "Psixologiya va muloqot",
+            icon: "🧠",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Psixologiya: Emotsional intellekt (EQ) va uning inson hayotidagi o'rni.`, a: `Yechim (${grade}-sinf darsligi): O'z hissiyotlarini tushunish va boshqalarning tuyg'ularini anglay olish.`},
+                {q: `${grade}-sinf Psixologiya: Stressni boshqarish va hissiy barqarorlikni saqlash usullari.`, a: `Yechim (${grade}-sinf darsligi): Salbiy ta'sirlarni yengish, nafas olish mashqlari va dam olish.`},
+                {q: `${grade}-sinf Psixologiya: Time-management (Vaqtni to'g'ri taqsimlash) qoidalari.`, a: `Yechim (${grade}-sinf darsligi): Vazifalarni muhimligiga qarab rejalashtirish va ulgurish ko'nikmasi.`},
+                {q: `${grade}-sinf Psixologiya: Shaxslararo muloqot madaniyati va samarali tinglash qobiliyati.`, a: `Yechim (${grade}-sinf darsligi): Suhbatdoshni hurmat qilgan holda tinglash va fikr almashish.`},
+                {q: `${grade}-sinf Psixologiya: Tanqidiy fikrlash va axborotni saralash ko'nikmalari.`, a: `Yechim (${grade}-sinf darsligi): Axborotni ko'r-ko'rona qabul qilmay, tahlil qilish qobiliyati.`},
+                {q: `${grade}-sinf Psixologiya: Konfliktlarni tinch yo'l bilan hal qilish (Mediatsiya asoslari).`, a: `Yechim (${grade}-sinf darsligi): Mojarolarni musofara va murosali yo'l bilan bartaraf etish.`},
+                {q: `${grade}-sinf Psixologiya: Xotira turlari va diqqatni jamlash mashqlari.`, a: `Yechim (${grade}-sinf darsligi): Qisqa muddatli, uzoq muddatli xotira va e'tiborni qaratish usullari.`},
+                {q: `${grade}-sinf Psixologiya: Motivatsiya turlari (ichki va tashqi motivatsiya) va maqsad qo'yish.`, a: `Yechim (${grade}-sinf darsligi): Shaxsiy rivojlanish uchun o'zini rag'batlantirish mexanizmlari.`},
+                {q: `${grade}-sinf Psixologiya: Liderlik qobiliyatlari va jamoada ishlash (Teamwork).`, a: `Yechim (${grade}-sinf darsligi): Jamoani ortidan ergashtira olish va umumiy maqsad sari harakat.`},
+                {q: `${grade}-sinf Psixologiya: O'z-o'zini baholash (Self-esteem) va o'ziga bo'lgan ishonch.`, a: `Yechim (${grade}-sinf darsligi): O'z imkoniyatlarini real baholash va sog'lom ishonch.`},
+                {q: `${grade}-sinf Psixologiya: Temperament turlari qaysilar?`, a: `Yechim (${grade}-sinf darsligi): Xolerik, sangvinik, flegmatik va melanxolik.`},
+                {q: `${grade}-sinf Psixologiya: Empatiya so'zining ma'nosi nima?`, a: `Yechim (${grade}-sinf darsligi): Boshqalarning holatini va dardini o'z boshidan kechirgandek his eta olish.`},
+                {q: `${grade}-sinf Psixologiya: Qaror qabul qilishda qanday xatolarga yo'l qo'yiladi?`, a: `Yechim (${grade}-sinf darsligi): Shoshma-shosharlik, hissiyotga berilish va tahlil qilmaslik.`},
+                {q: `${grade}-sinf Psixologiya: Oila davrasidagi sog'lom muhitning ahamiyati.`, a: `Yechim (${grade}-sinf darsligi): Inson shaxs sifatida shakllanishining asosiy poydevori.`},
+                {q: `${grade}-sinf Psixologiya: Do'stlik rishtalarida eng muhim fazilat.`, a: `Yechim (${grade}-sinf darsligi): Ishonch, sadoqat va o'zaro yordam.`},
+                {q: `${grade}-sinf Psixologiya: Mediasavodxonlik va internet xavfsizligi.`, a: `Yechim (${grade}-sinf darsligi): Feyk xabarlarni farqlash va tarmoqdagi xavfsizlik qoidalari.`},
+                {q: `${grade}-sinf Psixologiya: Sog'lom turmash tarzi psixologiyasi.`, a: `Yechim (${grade}-sinf darsligi): Jismoniy faollik va ruhiy xotirjamlik uyg'unligi.`},
+                {q: `${grade}-sinf Psixologiya: O'smirlik davri psixologik xususiyatlari.`, a: `Yechim (${grade}-sinf darsligi): Mustaqillikka intilish va o'z 'men'ini topish davri.`},
+                {q: `${grade}-sinf Psixologiya: Ijodiy fikrlash (Creativity) nima?`, a: `Yechim (${grade}-sinf darsligi): Odatiy narsalarga yangicha yondashish va nodil yechimlar topish.`},
+                {q: `${grade}-sinf Psixologiya: Shukronalik tuyg'usi insonga qanday ta'sir qiladi?`, a: `Yechim (${grade}-sinf darsligi): Ruhiy xotirjamlik va ijobiy kayfiyat bag'ishlaydi.`}
+            ]
+        },
+        technology: {
+            name: "Texnologiya va Dizayn",
+            icon: "🎨",
+            getQuestions: (grade) => [
+                {q: `${grade}-sinf Texnologiya: Zamonaviy dizayn va estetika asoslari (UI/UX).`, a: `Yechim (${grade}-sinf darsligi): Foydalilik, qulaylik va go'zallikning o'zaro uyg'unligi.`},
+                {q: `${grade}-sinf Texnologiya: Grafik dizaynda ranglar uyg'unligi va kontrast qoidalari.`, a: `Yechim (${grade}-sinf darsligi): Ranglar doirasi va vizual jozibadorlikni ta'minlash.`},
+                {q: `${grade}-sinf Texnologiya: Loyihalash va modellashtirishning bosqichma-bosqich jarayoni.`, a: `Yechim (${grade}-sinf darsligi): G'oya, eskiz, chizma va tayyor mahsulot yaratish bosqichlari.`},
+                {q: `${grade}-sinf Texnologiya: Kompyuter grafikasi va vektorli tahrirlash dasturlari (Figma, Illustrator).`, a: `Yechim (${grade}-sinf darsligi): Raqamli dizayn va logotiplar yaratish muhiti.`},
+                {q: `${grade}-sinf Texnologiya: Ergonomika tushunchasi va inson uchun qulay ish muhiti.`, a: `Yechim (${grade}-sinf darsligi): Buyumlar va ish joyining inson tanasiga qulay qilib moslanishi.`},
+                {q: `${grade}-sinf Texnologiya: 3D modellashtirish va 3D printerlar texnologiyasi.`, a: `Yechim (${grade}-sinf darsligi): Raqamli obyektlarni qatlamlab fizika olamida chop etish.`},
+                {q: `${grade}-sinf Texnologiya: Fotografiya va kompozitsiya qoidalari (Rule of thirds).`, a: `Yechim (${grade}-sinf darsligi): Tasvirda e'tiborni to'g'ri taqsimlash qoidalari.`},
+                {q: `${grade}-sinf Texnologiya: Milliy hunarmandchilik va amaliy san'at turlari.`, a: `Yechim (${grade}-sinf darsligi): Naqqoshlik, kulolchilik, zargarlik va milliy kashtachilik.`},
+                {q: `${grade}-sinf Texnologiya: Interyer dizayni va xonani yoritish, mebel joylashtirish.`, a: `Yechim (${grade}-sinf darsligi): Makonni to'g'ri rejalashtirish va qulaylik yaratish.`},
+                {q: `${grade}-sinf Texnologiya: Web dizayn asoslari va sahifa tuzilishi.`, a: `Yechim (${grade}-sinf darsligi): Saytning foydalanuvchiga qulay va tushunarli ko'rinishini loyihalash.`},
+                {q: `${grade}-sinf Texnologiya: Origami san'ati nima bilan shug'ullanadi?`, a: `Yechim (${grade}-sinf darsligi): Qog'ozni buklash orqali turli shakllar yasash san'ati.`},
+                {q: `${grade}-sinf Texnologiya: Logotip dizaynida qanday talablar muhim?`, a: `Yechim (${grade}-sinf darsligi): Soddalik, esda qolarlilik va brendga moslik.`},
+                {q: `${grade}-sinf Texnologiya: Chizma geometriyada asosiy chiziq turlari.`, a: `Yechim (${grade}-sinf darsligi): Tutash yo'g'on, shtrix va shtrix-punktir chiziqlar.`},
+                {q: `${grade}-sinf Texnologiya: Yog'ochga ishlov berish texnologik usullari.`, a: `Yechim (${grade}-sinf darsligi): Arralash, randa qilish, yo'nish va pardozlash.`},
+                {q: `${grade}-sinf Texnologiya: Metallga ishlov berish va ulash usullari.`, a: `Yechim (${grade}-sinf darsligi): Kesish, egish, parmalash va payvandlash.`},
+                {q: `${grade}-sinf Texnologiya: Kiyim dizayni va bichish asoslari.`, a: `Yechim (${grade}-sinf darsligi): Andoza (lesalo) tayyorlash va mato bichish.`},
+                {q: `${grade}-sinf Texnologiya: Qo'l mehnati va mexanizatsiyalash farqi.`, a: `Yechim (${grade}-sinf darsligi): Mexanizatsiyada ish qurollari avtomatlashtirilgan bo'ladi.`},
+                {q: `${grade}-sinf Texnologiya: San'atda abstraksionizm nimani anglatadi?`, a: `Yechim (${grade}-sinf darsligi): Aniq shakllardan voz kechib, rang va chiziqlar orqali g'oya berish.`},
+                {q: `${grade}-sinf Texnologiya: Brending va korporativ uslub nima?`, a: `Yechim (${grade}-sinf darsligi): Kompaniyaning o'ziga xos vizual qiyofasi va belgisi.`},
+                {q: `${grade}-sinf Texnologiya: Innovatsion materiallar xususiyatlari.`, a: `Yechim (${grade}-sinf darsligi): Zamonaviy yengil, mustahkam va ekologik toza materiallar.`}
+            ]
+        }
+    };
+
+    window.onload = function() {
+        buildGradeButtons();
+    };
+
+    function buildGradeButtons() {
+        const gradesGrid = document.getElementById("gradesGrid");
+        gradesGrid.innerHTML = "";
+        for (let g = 5; g <= 11; g++) {
+            let btn = document.createElement("button");
+            btn.className = "grade-btn";
+            btn.innerText = `${g}-SINF`;
+            btn.onclick = () => selectGrade(g);
+            gradesGrid.appendChild(btn);
+        }
+    }
+
+    function selectGrade(grade) {
+        selectedGrade = grade;
+        document.getElementById("gradeMenuModal").style.display = "none";
+        document.getElementById("selectedGradeTitle").innerText = `${grade}-SINF: 15 TA FANNI TANLANG`;
+        document.getElementById("subjectMenuModal").style.display = "flex";
+        buildSubjectMenu();
+    }
+
+    function buildSubjectMenu() {
+        const gridMenu = document.getElementById("subjectsGridMenu");
+        gridMenu.innerHTML = "";
+        for (let key in database) {
+            let sub = database[key];
+            let btn = document.createElement("button");
+            btn.className = "subject-menu-btn";
+            btn.innerHTML = `<span class="icon">${sub.icon}</span><span>${sub.name}</span>`;
+            btn.onclick = () => selectSubjectAndPromptTeams(key);
+            gridMenu.appendChild(btn);
+        }
+    }
+
+    function selectSubjectAndPromptTeams(key) {
+        selectedSubjectKey = key;
+        document.getElementById("subjectMenuModal").style.display = "none";
+        document.getElementById("teamSetupModal").style.display = "flex";
+        document.getElementById("headerInfoTitle").innerText = `${selectedGrade}-SINF | ${database[key].name.toUpperCase()}`;
+    }
+
+    function resetToGradeSelection() {
+        document.getElementById("resultsModal").style.display = "none";
+        document.getElementById("boardView").style.display = "none";
+        document.getElementById("teamSetupModal").style.display = "none";
+        document.getElementById("questionModal").style.display = "none";
+        document.getElementById("subjectMenuModal").style.display = "none";
+        document.getElementById("gradeMenuModal").style.display = "flex";
+        document.getElementById("headerInfoTitle").innerText = "SINF VA FAN TANLANMAGAN";
+    }
+
+    function buildTeamsAndStartGame() {
+        const countInput = parseInt(document.getElementById("teamCountInput").value);
+        teamCount = (countInput >= 2 && countInput <= 6) ? countInput : 2;
+
+        teams = [];
+        for (let i = 1; i <= teamCount; i++) {
+            teams.push({
+                id: i,
+                name: `Jamoa ${i}`,
+                animalIdx: Math.floor(Math.random() * animals.length),
+                score: 0
+            });
+        }
+
+        prepareRandomized40Questions();
+        renderSidebars();
+        document.getElementById("teamSetupModal").style.display = "none";
+        document.getElementById("boardView").style.display = "flex";
+        renderTilesGrid();
+    }
+
+    function prepareRandomized40Questions() {
+        let basePool = database[selectedSubjectKey].getQuestions(selectedGrade);
+        let clonedPool = [...basePool];
+        shuffleArray(clonedPool);
+
+        activeBoardQuestions = [];
+        for (let i = 0; i < 40; i++) {
+            let source = clonedPool[i % clonedPool.length];
+            let variantSuffix = Math.floor(i / clonedPool.length) > 0 ? ` (Variant ${Math.floor(i / clonedPool.length) + 1})` : "";
+            
+            activeBoardQuestions.push({
+                id: i + 1,
+                points: 30,
+                text: `${source.q}${variantSuffix}`,
+                answer: `Mukammal Ilmiy Yechim:\n${source.a}`,
+                answered: false
+            });
+        }
+
+        let textAnswerPairs = activeBoardQuestions.map(item => ({ text: item.text, answer: item.answer, points: item.points }));
+        shuffleArray(textAnswerPairs);
+
+        for (let i = 0; i < 40; i++) {
+            activeBoardQuestions[i].text = textAnswerPairs[i].text;
+            activeBoardQuestions[i].answer = textAnswerPairs[i].answer;
+            activeBoardQuestions[i].points = textAnswerPairs[i].points;
+        }
+    }
+
+    function renderSidebars() {
+        const left = document.getElementById("leftSidebar");
+        const right = document.getElementById("rightSidebar");
+        left.innerHTML = "";
+        right.innerHTML = "";
+
+        teams.forEach((t, index) => {
+            let avatarCombined = animals[t.animalIdx];
+            let html = `
+                <div class="team-box">
+                    <div class="team-name-row">
+                        <button class="dice-btn" title="Avtomatik ism generatsiya qilish" onclick="randomizeTeamName(${t.id})">🎲</button>
+                        <input type="text" class="team-name-input" id="teamInput_${t.id}" value="${t.name}" required placeholder="Nom kiritish majburiy!" oninput="updateTeamName(${t.id}, this.value)">
+                    </div>
+                    
+                    <div class="avatar-customizer" title="Avatar stikerlari">
+                        <button class="av-part" onclick="changeAvatarPart(${t.id}, -1)">◀</button>
+                        <div class="av-preview">${avatarCombined}</div>
+                        <button class="av-part" onclick="changeAvatarPart(${t.id}, 1)">▶</button>
+                    </div>
+
+                    <div class="team-score-row">
+                        <span style="font-size: 13px; color: #94a3b8;">Ball:</span>
+                        <div class="team-score" id="scoreDisplay_${t.id}">${t.score}</div>
+                        <div class="team-controls">
+                            <button class="t-btn t-minus" onclick="modifyScore(${t.id}, -30)">-</button>
+                            <button class="t-btn t-plus" onclick="modifyScore(${t.id}, 30)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            if (index < Math.ceil(teams.length / 2)) {
+                left.innerHTML += html;
+            } else {
+                right.innerHTML += html;
+            }
+        });
+    }
+
+    const coolTeamNames = ["Alpha", "Lions", "Cyber", "Titans", "Ziyo", "Phoenix", "Nova", "Apex", "Galaxy", "Smart", "Vector"];
+    function randomizeTeamName(id) {
+        let team = teams.find(t => t.id === id);
+        if (team) {
+            let randomName = coolTeamNames[Math.floor(Math.random() * coolTeamNames.length)] + " " + id;
+            team.name = randomName;
+            document.getElementById(`teamInput_${id}`).value = randomName;
+        }
+    }
+
+    function updateTeamName(id, val) {
+        let team = teams.find(t => t.id === id);
+        if (team) team.name = val;
+    }
+
+    function changeAvatarPart(id, dir) {
+        let team = teams.find(t => t.id === id);
+        if (team) {
+            team.animalIdx = (team.animalIdx + dir + animals.length) % animals.length;
+            renderSidebars();
+        }
+    }
+
+    function modifyScore(id, amount) {
+        let team = teams.find(t => t.id === id);
+        if (team) {
+            team.score += amount;
+            document.getElementById(`scoreDisplay_${id}`).innerText = team.score;
+        }
+    }
+
+    function renderTilesGrid() {
+        const grid = document.getElementById("tilesGrid");
+        grid.innerHTML = "";
+        document.getElementById("boardTitle").innerText = `${selectedGrade}-sinf ${database[selectedSubjectKey].name} (40 ta Savol)`;
+
+        activeBoardQuestions.forEach((q, idx) => {
+            let tile = document.createElement("div");
+            tile.className = "tile";
+            tile.innerText = q.id;
+
+            if (q.answered) {
+                tile.classList.add("disabled");
+            } else {
+                tile.onclick = () => openQuestionModal(idx);
+            }
+            grid.appendChild(tile);
+        });
+    }
+
+    function openQuestionModal(index) {
+        currentTileIndex = index;
+        let q = activeBoardQuestions[index];
+
+        let modal = document.getElementById("questionModal");
+        modal.style.display = "flex";
+
+        document.getElementById("modalBadge").innerText = `${selectedGrade}-sinf ${database[selectedSubjectKey].name} — Savol #${q.id} (${q.points} ball)`;
+        document.getElementById("modalText").innerText = q.text;
+
+        let ansBox = document.getElementById("modalAnswerBox");
+        ansBox.style.display = "none";
+        ansBox.innerText = q.answer;
+        document.getElementById("revealBtn").style.display = "inline-block";
+    }
+
+    function revealModalAnswer() {
+        let q = activeBoardQuestions[currentTileIndex];
+        let ansBox = document.getElementById("modalAnswerBox");
+        ansBox.style.display = "block";
+        document.getElementById("revealBtn").style.display = "none";
+        q.answered = true;
+    }
+
+    function closeModalAndDisable() {
+        document.getElementById("questionModal").style.display = "none";
+        renderTilesGrid();
+    }
+
+    function finishGameCheck() {
+        let sortedTeams = [...teams].sort((a, b) => b.score - a.score);
+        let podiumList = document.getElementById("podiumList");
+        podiumList.innerHTML = "";
+
+        sortedTeams.forEach((t, index) => {
+            let place = index + 1;
+            let emoji = place === 1 ? "🥇" : place === 2 ? "🥈" : place === 3 ? "🥉" : "🏅";
+            let avatarCombined = animals[t.animalIdx];
+            podiumList.innerHTML += `
+                <div class="podium-item">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 20px;">${emoji}</span>
+                        <span style="font-size: 22px; background: #111827; padding: 4px 8px; border-radius: 6px;">${avatarCombined}</span>
+                        <span>${place}-O'rin: <b>${t.name}</b></span>
+                    </div>
+                    <span style="color: #34d399; font-size: 18px;">${t.score} ball</span>
+                </div>
+            `;
+        });
+
+        document.getElementById("resultsModal").style.display = "flex";
+    }
+
+    function restartSameGame() {
+        document.getElementById("resultsModal").style.display = "none";
+        teams.forEach(t => t.score = 0);
+        prepareRandomized40Questions();
+        renderSidebars();
+        renderTilesGrid();
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+</script>
+
+</body>
+</html>
